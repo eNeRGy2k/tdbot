@@ -132,10 +132,61 @@ def descargar_archivos(bot, update):
 	else:
 		bot.send_message(chat_id=m.chat.id, text="No tienes permisos suficientes para utilizar el bot", parse_mode="HTML") 
 
+#----------------------------------------------
+# Función para descargar .torrent desde URL y 
+# enviarlos a una carpeta
+#----------------------------------------------
+
+def descargar_archivos_url(bot, update, args):
+	
+	#Añadimos los ID de usuarios a la lista "miembros_permitidos"
+	if calcular("usuario") > 0:
+		miembros_permitidos=[]
+		for i in range (1,calcular("usuario")+1):
+			miembros_permitidos.append(int(environ['usuario'+str(i)]))
+
+	#Añadimos los ID de grupos a la lista "miembros_permitidos"
+	if calcular("grupo") > 0:
+		for i in range (1,calcular("grupo")+1):
+			miembros_permitidos.append(int(environ['grupo'+str(i)]))
+
+	m=update.message
+
+	if int(m.chat.id) in miembros_permitidos:			
+
+		ruta='/home/descargas/' 
+		tmp='/zip/'
+
+		url = " ".join(args)
+		
+		if len(url)>0:
+    		
+			filename = url[url.rfind("/")+1:]
+
+			if filename.endswith('.zip'):				
+				DownloadFile(url, tmp, filename)
+				zf = zipfile.ZipFile(tmp+filename, "r")
+				for torrents in zf.namelist():
+					if os.path.dirname(torrents)=='' and torrents.endswith('.torrent'):
+						zf.extract(torrents, ruta)					
+				zf.close()		
+				rename_files()
+				remove(tmp+filename)		
+				bot.send_message(chat_id=m.chat.id, text="Se han guardado los archivos de <b>"+filename+"</b> en la carpeta", parse_mode="HTML") 			
+
+			if filename.endswith('.torrent'):			
+				DownloadFile(url, ruta, filename)
+				bot.send_message(chat_id=m.chat.id, text="El archivo <b>"+filename+"</b> se ha añadido guardado en la carpeta", parse_mode="HTML") 
+				
+		else:
+			bot.send_message(chat_id=m.chat.id, text="Debes indicar una URL", parse_mode="HTML") 
+
+	else:
+		bot.send_message(chat_id=m.chat.id, text="No tienes permisos suficientes para utilizar el bot", parse_mode="HTML") 
+
 
 def error(bot, update, error):
 	logger.warn('Update "%s" caused error "%s"' % (update, error))
-
 
 def main():
     # Create the EventHandler and pass it your bot's token.
@@ -144,6 +195,8 @@ def main():
 	dp = updater.dispatcher
 
 	dp.add_handler(MessageHandler(Filters.document, descargar_archivos)) 
+	dp.add_handler(CommandHandler("addtorrent", descargar_archivos_url, pass_args=True), group = 1) 	
+	
     # Get the dispatcher to register handlers
 
 
@@ -162,6 +215,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-	
-	
-	
