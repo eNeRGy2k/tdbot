@@ -98,7 +98,6 @@ id nombre_usuario
 
 - **Volumen:** aquí indicaremos donde queremos que se almacenen los torrent dentro de nuestro sistema operativo (DSM, OpenMediaVault, QTS, etc.). Habitualmente será el directorio "caliente" que utiliza el cliente torrent para añadir los .torrent a la lista de descargas.
 
-  
 
 
 ## Creación del contenedor vía cli
