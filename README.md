@@ -1,6 +1,8 @@
 
 
-# tzinm/descargas-bcpt
+# tdbot - Torrent Downloader Bot
+
+Fork del Bot de tzinm/descargas-bcpt, pero con mejoras tales como el envío desde URL por comandos.
 
 La creación de este bot se basa en la guía de "[Bot de descargas para NAS Synology](https://telegra.ph/Bot-de-descargas-para-NAS-Synology-10-13)" en la que se explica como aprovechar un bot de telegram para enviar ficheros **.torrent** y **zip** (que contengan ficheros torrent) a nuestro gestor de torrents (Transmission, Deluge, Download Station, etc.).
 
