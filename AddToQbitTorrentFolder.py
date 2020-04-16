@@ -127,7 +127,7 @@ def descargar_archivos(bot, update):
 
 		if filename.endswith('.torrent'):		
 			DownloadFile(archivo.file_path, ruta, filename)
-			bot.send_message(chat_id=m.chat.id, text="El archivo <b>"+filename+"</b> se ha añadido guardado en la carpeta", parse_mode="HTML") 
+			bot.send_message(chat_id=m.chat.id, text="El archivo <b>"+filename+"</b> se ha guardado en la carpeta", parse_mode="HTML") 
 
 	else:
 		bot.send_message(chat_id=m.chat.id, text="No tienes permisos suficientes para utilizar el bot", parse_mode="HTML") 
